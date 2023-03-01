@@ -1,8 +1,8 @@
-joukkomielenosoituslakko
 joukkomielenosoituskulkue
+joukkomielenosoituslakko
 joukkomielenosoitusmarssi
-vastalausemielenosoituslakko
 vastalausemielenosoituskulkue
+vastalausemielenosoituslakko
 vastalausemielenosoitusmarssi
 vankimielisairaalahoito
 kevytmoottoripyöräjengi
