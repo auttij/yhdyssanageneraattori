@@ -22,14 +22,6 @@ def binary_search(arr, check_function):
             return m
     return -1
 
-def compare_word(base, word):
-    l = len(base)
-    if word[:l] == base:
-        return 1
-    elif word[-l:] == base:
-        return 2
-    return 0
-
 def make_combinations(base, a, b):
     l = len(base)
     # for (i, j) in product(b, a):
