@@ -1,4 +1,5 @@
 from itertools import product
+from time import perf_counter
 
 def read_file(path):
     with open(path, encoding='utf-8') as f:
@@ -33,7 +34,7 @@ def make_combinations(base, a, b):
     l = len(base)
     # for (i, j) in product(b, a):
     #     print(f"{i}{j[l:]}", i, j)
-    return [f"{i}{j[l:]}" for (i, j) in product(b, a)]
+    return (f"{i}{j[l:]}" for (i, j) in product(b, a))
 
 def main():
     wordlist = read_file('all_words.txt')
@@ -51,28 +52,30 @@ def main():
     }
 
     total_word_count = len(length_sorted_wordlist)
-    for l in range(8, 20):
+    for l in range(2, 23):
+        start_time = perf_counter()
+
         print(f"looking for words with length {l}, like {length_sorted_wordlist[breakpoints[l]]}")
+
         range_size = breakpoints[l + 1] - breakpoints[l]
         size_to_end = total_word_count - ((breakpoints[l + 1] + breakpoints[l]) // 2)
-        range_total = range_size * size_to_end
+        range_total = (range_size * size_to_end) + range_size // 2
         count = 0
+
         for i in range(breakpoints[l], breakpoints[l + 1]):
             print(f'progress {count} / {range_total}', end='\r')
             base = length_sorted_wordlist[i]
-            a, b = [], []
-            for word in length_sorted_wordlist[i:]:
-                if base == word:
-                    continue
-                result = compare_word(base, word)
-                if result == 1:
-                    a.append(word)
-                elif result == 2:
-                    b.append(word)
-            if len(a) and len(b):
-                combinations = make_combinations(base, a, b)
+
+            matching_start = [word for word in length_sorted_wordlist[i+1:] if word[:l] == base]
+            matching_end = [word for word in length_sorted_wordlist[i+1:] if word[-l:] == base]
+
+            if len(matching_start) and len(matching_end):
+                combinations = make_combinations(base, matching_start, matching_end)
                 append_to_file(f'output{l}.txt', combinations)
             count += (total_word_count - i)
+
+        end_time = perf_counter()
+        print(f"{count} words checked. time elapsed: {end_time - start_time:0.1f} seconds")
 
 if __name__ == '__main__':
     main()
