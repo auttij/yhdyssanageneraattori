@@ -50,11 +50,18 @@ def main():
         for i in range(2, len(length_sorted_wordlist[-1]))
     }
 
-    for l in range(2, 20):
+    total_word_count = len(length_sorted_wordlist)
+    for l in range(8, 20):
+        print(f"looking for words with length {l}, like {length_sorted_wordlist[breakpoints[l]]}")
+        range_size = breakpoints[l + 1] - breakpoints[l]
+        size_to_end = total_word_count - ((breakpoints[l + 1] + breakpoints[l]) // 2)
+        range_total = range_size * size_to_end
+        count = 0
         for i in range(breakpoints[l], breakpoints[l + 1]):
+            print(f'progress {count} / {range_total}', end='\r')
             base = length_sorted_wordlist[i]
             a, b = [], []
-            for word in length_sorted_wordlist[breakpoints[l]:]:
+            for word in length_sorted_wordlist[i:]:
                 if base == word:
                     continue
                 result = compare_word(base, word)
@@ -65,6 +72,7 @@ def main():
             if len(a) and len(b):
                 combinations = make_combinations(base, a, b)
                 append_to_file(f'output{l}.txt', combinations)
+            count += (total_word_count - i)
 
 if __name__ == '__main__':
     main()
