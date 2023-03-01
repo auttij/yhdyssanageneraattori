@@ -71,7 +71,7 @@ def main():
 
             if len(matching_start) and len(matching_end):
                 combinations = make_combinations(base, matching_start, matching_end)
-                append_to_file(f'output{l}.txt', combinations)
+                append_to_file(f'output/output{l:02d}.txt', combinations)
             count += (total_word_count - i)
 
         end_time = perf_counter()
