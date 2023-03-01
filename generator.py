@@ -25,7 +25,7 @@ def compare_word(base, word):
     l = len(base)
     if word[:l] == base:
         return 1
-    if word[l:] == base:
+    elif word[-l:] == base:
         return 2
     return 0
 
@@ -50,12 +50,11 @@ def main():
         for i in range(2, len(length_sorted_wordlist[-1]))
     }
 
-    for l in range(3, 20):
+    for l in range(2, 20):
         for i in range(breakpoints[l], breakpoints[l + 1]):
-            # i = breakpoints[4]
             base = length_sorted_wordlist[i]
             a, b = [], []
-            for word in length_sorted_wordlist[breakpoints[l // 2 + 1]:]:
+            for word in length_sorted_wordlist[breakpoints[l]:]:
                 if base == word:
                     continue
                 result = compare_word(base, word)
@@ -65,7 +64,7 @@ def main():
                     b.append(word)
             if len(a) and len(b):
                 combinations = make_combinations(base, a, b)
-                append_to_file('output.txt', combinations)
+                append_to_file(f'output{l}.txt', combinations)
 
 if __name__ == '__main__':
     main()
